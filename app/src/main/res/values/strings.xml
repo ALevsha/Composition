@@ -1,3 +1,28 @@
 <resources>
     <string name="app_name">Composition</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="relation_tag">Правила игры:</string>
+    <string name="relations_text">Это игра - головоломка по вычислению второго слагаемого при сложении двух чисел. Тебе будут представлео 4 уровня сложности на выбор: легкий, нормальный, средний и тяжелый. Выбирай уровень согласно своим способностям. Для прохождения игры на игровом поле будт представлены результат сложения, первое слагаемое и 6 вариантов ответа. Удачи!</string>
+    <string name="difficulty_level_text">Выберите уровень сложности:</string>
+    <string name="test">тест</string>
+    <string name="easy">простой</string>
+    <string name="normal">нормальный</string>
+    <string name="middle">средний</string>
+    <string name="hard">тяжелый</string>
+    <string name="right_answer_strings">Правильных ответов: %s (минимум %s)</string>
+    <string name="_1">1</string>
+    <string name="_7">7</string>
+    <string name="_2">2</string>
+    <string name="_3">3</string>
+    <string name="_4">4</string>
+    <string name="_5">5</string>
+    <string name="_6">6</string>
+    <string name="ok_b">Понял!</string>
+    <string name="str_score_percentage">Процент правильных ответов %s</string>
+    <string name="str_required_percentage">Необходимый процент правильных ответов %s</string>
+    <string name="src_score_answers">Ваш счет %s</string>
+    <string name="src_required_answers">Необходимое количество правильных ответов %s</string>
+    <string name="emoji">Game Over</string>
+    <string name="repeat">Попробовать снова</string>
 </resources>
