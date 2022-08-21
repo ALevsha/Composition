@@ -37,7 +37,7 @@
         android:padding="16dp"/>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/proceed_button"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="@string/ok_b"

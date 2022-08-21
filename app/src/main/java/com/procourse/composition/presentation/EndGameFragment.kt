@@ -6,13 +6,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.procourse.composition.R
+import com.procourse.composition.databinding.FragmentEndGameBinding
+import com.procourse.composition.databinding.FragmentGameBinding
 
 class EndGameFragment : Fragment() {
+
+    private var _binding: FragmentEndGameBinding? = null
+    private val binding: FragmentEndGameBinding
+        get() = _binding ?: throw RuntimeException("FragmentEndGameBinding is null")
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_end_game, container, false)
+        _binding = FragmentEndGameBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.button2.setOnClickListener { }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
