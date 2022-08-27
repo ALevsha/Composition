@@ -37,7 +37,9 @@ class StartFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.proceedButton.setOnClickListener { }
+        binding.proceedButton.setOnClickListener {
+            launchLevelChooseFragment()
+        }
 
     }
 
@@ -45,5 +47,18 @@ class StartFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun launchLevelChooseFragment() {
+        /*
+        * хорошим стилем программирования является однотипное создание объектов. Для фрагментов
+        * хорошим способом является создание экземпляра фрагмента через фабричный метод (в companion
+        * object создается публичный статичный метод, возвращающий экземпляр фрагмента. Также в этом
+        * методе  можно загрузить параметры во фрагмент.
+        * */
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.main_container, LevelChooseFragment.newInstance())
+            .addToBackStack(null)
+            .commit()
     }
 }
