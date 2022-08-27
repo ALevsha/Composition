@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.procourse.composition.R
 import com.procourse.composition.databinding.FragmentLevelChooseBinding
+import com.procourse.composition.domain.entity.Level
 
 class LevelChooseFragment : Fragment() {
 
@@ -25,15 +26,31 @@ class LevelChooseFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.testButton.setOnClickListener {  }
-        binding.easyButton.setOnClickListener {  }
-        binding.middleButton.setOnClickListener {  }
-        binding.hardButton.setOnClickListener {  }
+        with(binding){
+            testButton.setOnClickListener { launchGameFragment(Level.TEST) }
+            easyButton.setOnClickListener { launchGameFragment(Level.EASY) }
+            middleButton.setOnClickListener { launchGameFragment(Level.NORMAL) }
+            hardButton.setOnClickListener { launchGameFragment(Level.HARD) }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun launchGameFragment(level: Level){
+        requireActivity().supportFragmentManager.beginTransaction()
+            .replace(R.id.main_container, GameFragment.newInstance(level))
+            .addToBackStack(GameFragment.NAME)
+            .commit()
+    }
+
+    companion object{
+
+        fun newInstance(): LevelChooseFragment{
+            return LevelChooseFragment()
+        }
     }
 }
 
