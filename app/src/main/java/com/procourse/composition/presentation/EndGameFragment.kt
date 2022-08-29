@@ -7,11 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentManager
-import com.procourse.composition.R
 import com.procourse.composition.databinding.FragmentEndGameBinding
-import com.procourse.composition.databinding.FragmentGameBinding
 import com.procourse.composition.domain.entity.GameResult
-import com.procourse.composition.domain.entity.GameSettings
 
 class EndGameFragment : Fragment() {
 
@@ -43,13 +40,18 @@ class EndGameFragment : Fragment() {
         * то при уничтожении фрагмента ссылка на него также будет доступна, что приводит к утечке
         * памяти) и объект анонимного класса OnBackPressedCallback, в котором будет переопределен
         * метод handleOnBackPressed()*/
+        val callback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                retryGame()
+            }
+        }
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    rertyGame()
-                }
-            })
+            callback
+        )
+        binding.button2.setOnClickListener {
+            retryGame()
+        }
     }
 
     override fun onDestroyView() {
@@ -58,10 +60,15 @@ class EndGameFragment : Fragment() {
     }
 
     private fun parseArgument() {
-        gameResult = requireArguments().getSerializable(GAME_RESULT_KEY) as GameResult
+        /* при использовании getParcelable приходит нуллабельный объект, => для получения
+        * значений можно использовать оператор let {lambda}. В угловых скобках необходимо
+        * указать получаемый тип*/
+        requireArguments().getParcelable<GameResult>(GAME_RESULT_KEY)?.let {
+            gameResult = it
+        }
     }
 
-    private fun rertyGame() {
+    private fun retryGame() {
         /* чтобы пропустить предидущий фрагмент, при нажатии кнопки назад сперва переходят к нему
         * по заданному имени фрагмента с флагом включения на очистку backStack'а
         * FragmentManager.POP_BACK_STACK_INCLUSIVE*/
@@ -78,7 +85,7 @@ class EndGameFragment : Fragment() {
         fun newInstance(gameResult: GameResult): EndGameFragment {
             return EndGameFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(GAME_RESULT_KEY, gameResult)
+                    putParcelable(GAME_RESULT_KEY, gameResult)
                 }
             }
         }

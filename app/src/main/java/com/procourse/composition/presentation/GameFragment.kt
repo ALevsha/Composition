@@ -60,7 +60,9 @@ class GameFragment : Fragment() {
         * здесь использется requireArguments() чтобы при несоздании фрагмента или неправильного
         * аргумента выбрасывалось исключение
         */
-        level = requireArguments().getSerializable(KEY_LEVEL) as Level
+        requireArguments().getParcelable<Level>(KEY_LEVEL)?.let {
+            level = it
+        }
     }
 
     private fun launchEndGameFragment(gameResult: GameResult){
@@ -85,10 +87,10 @@ class GameFragment : Fragment() {
                 arguments = Bundle().apply {
                 /*
                 * чтобы положить в словарь аргументов объект, необходимо привести его
-                * к набору бит с помощбю интерфейса Serializable. Enum класс неявно реализует этот
-                * интерфейс.
+                * к набору бит с помощбю интерфейса Serializable b=или Parcelable.
+                * Enum класс неявно реализует этот интерфейс.
                 */
-                    putSerializable(KEY_LEVEL, level)
+                    putParcelable(KEY_LEVEL, level)
                 }
             }
         }
