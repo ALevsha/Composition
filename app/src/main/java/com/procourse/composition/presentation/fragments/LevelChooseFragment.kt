@@ -1,4 +1,4 @@
-package com.procourse.composition.presentation
+package com.procourse.composition.presentation.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -48,7 +48,7 @@ class LevelChooseFragment : Fragment() {
 
     companion object{
 
-        fun newInstance(): LevelChooseFragment{
+        fun newInstance(): LevelChooseFragment {
             return LevelChooseFragment()
         }
     }
