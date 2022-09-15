@@ -1,20 +1,24 @@
-package com.procourse.composition.presentation
+package com.procourse.composition.presentation.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.lifecycle.ViewModelProvider
 import com.procourse.composition.R
 import com.procourse.composition.data.GameRepositoryImpl
 import com.procourse.composition.databinding.FragmentGameBinding
 import com.procourse.composition.domain.entity.GameResult
 import com.procourse.composition.domain.entity.Level
 import com.procourse.composition.domain.usecase.GetGameSettingsUseCase
+import com.procourse.composition.presentation.viewmodel.GameFragmentViewModel
 
 class GameFragment : Fragment() {
 
     private lateinit var level: Level // переменная, хранящая уровень
+
+    private lateinit var viewModel: GameFragmentViewModel
 
     private var _binding: FragmentGameBinding? = null
     private val binding: FragmentGameBinding
@@ -40,6 +44,7 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this)[GameFragmentViewModel::class.java]
         binding.tvOption1.setOnClickListener{
             launchEndGameFragment(GameResult(
                 winner = true,
@@ -48,6 +53,7 @@ class GameFragment : Fragment() {
                 getGameSettingsUseCase(level)
             ))
         }
+
     }
 
     override fun onDestroyView() {
@@ -78,7 +84,6 @@ class GameFragment : Fragment() {
 
         // ключ для уровня
         private const val KEY_LEVEL = "level"
-
 
         fun newInstance(level: Level): GameFragment {
             // используем apply для работы с экземпляром объекта
