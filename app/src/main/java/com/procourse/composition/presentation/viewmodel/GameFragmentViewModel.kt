@@ -44,19 +44,16 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(
         get() = _percentOfRightAnswers
 
     private lateinit var _minPercentOfRightAnswers: MutableLiveData<Int> // минимальный процент
-
     // правильных ответов для вторичного прогресса (второй граничный прогресс)
     val minPercentOfRightAnswers: LiveData<Int>
         get() = _minPercentOfRightAnswers
 
     private lateinit var _enoughCountOfAnswers: MutableLiveData<Boolean> // достигнуто ли
-
     // достаточное количество правильных ответов
     val enoughCountOfAnswers: LiveData<Boolean>
         get() = _enoughCountOfAnswers
 
     private lateinit var _enoughPercentOfAnswers: MutableLiveData<Boolean> // достигнут ли
-
     // достаточный процент правильных ответов
     val enoughPercentOfAnswers: LiveData<Boolean>
         get() = _enoughPercentOfAnswers
