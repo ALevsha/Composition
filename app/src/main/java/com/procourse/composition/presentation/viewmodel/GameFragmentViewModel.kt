@@ -28,41 +28,41 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(
     private var timer: CountDownTimer? = null // таймер отсчета времени по уровню сложности
     private val context = application // контекст для получения строки из строковых ресурсов
 
-    private lateinit var _formattedTime: MutableLiveData<String> // лайвдата строки таймера
+    private val _formattedTime = MutableLiveData<String>() // лайвдата строки таймера
     val formattedTime: LiveData<String>
         get() = _formattedTime
 
-    private lateinit var _question: MutableLiveData<Question> // лайвдата вопроса
+    private val _question = MutableLiveData<Question>() // лайвдата вопроса
     val question: LiveData<Question>
         get() = _question
 
     private var countOfRightAnswers = 0 // количество правильных ответов
     private var countOfAnswers = 0 // количество ответов
 
-    private lateinit var _percentOfRightAnswers: MutableLiveData<Int> // процент правильных ответов
+    private val _percentOfRightAnswers = MutableLiveData<Int>() // процент правильных ответов
     val percentOfRightAnswers: LiveData<Int>
         get() = _percentOfRightAnswers
 
-    private lateinit var _minPercentOfRightAnswers: MutableLiveData<Int> // минимальный процент
+    private val _minPercentOfRightAnswers = MutableLiveData<Int>() // минимальный процент
     // правильных ответов для вторичного прогресса (второй граничный прогресс)
     val minPercentOfRightAnswers: LiveData<Int>
         get() = _minPercentOfRightAnswers
 
-    private lateinit var _enoughCountOfAnswers: MutableLiveData<Boolean> // достигнуто ли
+    private val _enoughCountOfAnswers = MutableLiveData<Boolean>() // достигнуто ли
     // достаточное количество правильных ответов
     val enoughCountOfAnswers: LiveData<Boolean>
         get() = _enoughCountOfAnswers
 
-    private lateinit var _enoughPercentOfAnswers: MutableLiveData<Boolean> // достигнут ли
+    private val _enoughPercentOfAnswers = MutableLiveData<Boolean>() // достигнут ли
     // достаточный процент правильных ответов
     val enoughPercentOfAnswers: LiveData<Boolean>
         get() = _enoughPercentOfAnswers
 
-    private lateinit var _formattedProgress: MutableLiveData<String> // строка прогресса
+    private val _formattedProgress = MutableLiveData<String>() // строка прогресса
     val formattedProgress: LiveData<String>
         get() = _formattedProgress
 
-    private lateinit var _gameResult: MutableLiveData<GameResult> // результат выполнения
+    private val _gameResult = MutableLiveData<GameResult>() // результат выполнения
     val gameResult: LiveData<GameResult>
         get() = _gameResult
 
