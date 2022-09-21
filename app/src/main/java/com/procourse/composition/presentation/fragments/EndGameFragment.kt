@@ -50,14 +50,25 @@ class EndGameFragment : Fragment() {
                 retryGame()
             }
         }
+        setClickListeners(callback)
+        bindViews()
+
+
+    }
+
+    private fun setClickListeners(callback: OnBackPressedCallback) {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             callback
         )
+        binding.buttonRetry.setOnClickListener {
+            retryGame()
+        }
+    }
+
+    @SuppressLint("StringFormatMatches")
+    private fun bindViews() {
         with(binding) {
-            buttonRetry.setOnClickListener {
-                retryGame()
-            }
             if (gameResult.winner)
                 emojiResult.setImageResource(R.drawable.happy)
             else
@@ -80,14 +91,15 @@ class EndGameFragment : Fragment() {
                 requireContext().getString(R.string.str_score_percentage),
                 calculateProgressPercent()
             )
-
         }
-
-
     }
 
-    private fun calculateProgressPercent() = // подсчет прогресса
-        ((gameResult.countOfRightAnswers / gameResult.countOfQuestions.toDouble()) * 100).toInt()
+    private fun calculateProgressPercent(): Int {
+        // подсчет прогресса
+        if (gameResult.countOfQuestions == 0)
+            return 0
+        return ((gameResult.countOfRightAnswers / gameResult.countOfQuestions.toDouble()) * 100).toInt()
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
