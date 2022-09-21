@@ -19,16 +19,18 @@ import com.procourse.composition.domain.entity.GameResult
 import com.procourse.composition.domain.entity.Level
 import com.procourse.composition.domain.usecase.GetGameSettingsUseCase
 import com.procourse.composition.presentation.viewmodel.GameFragmentViewModel
+import com.procourse.composition.presentation.viewmodel.GameViewModelFactory
 
 class GameFragment : Fragment() {
 
     private lateinit var level: Level // переменная, хранящая уровень
 
-    private val viewModel by lazy {
-        ViewModelProvider(
-            this,
-            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
-        )[GameFragmentViewModel::class.java]
+    private val modelFactory by lazy { // создание фабрики viewModel с передачей параметров внутрь
+        GameViewModelFactory(level, requireActivity().application)
+    }
+
+    private val viewModel by lazy { // создание объекта viewModel
+        ViewModelProvider(this, modelFactory)[GameFragmentViewModel::class.java]
     }
 
     private val tvOptions by lazy {
@@ -66,7 +68,7 @@ class GameFragment : Fragment() {
     @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.startGame(level)
+
         observeViewModel()
         setClickListeners()
     }
@@ -76,15 +78,15 @@ class GameFragment : Fragment() {
         _binding = null
     }
 
-    private fun setClickListeners(){
+    private fun setClickListeners() {
         for (tvOption in tvOptions)
-            tvOption.setOnClickListener{
+            tvOption.setOnClickListener {
                 viewModel.chooseAnswer(tvOption.text.toString().toInt())
             }
     }
 
-    private fun observeViewModel(){
-        with(viewModel){
+    private fun observeViewModel() {
+        with(viewModel) {
             question.observe(viewLifecycleOwner) {
                 binding.tvSum.text = it.sum.toString()
                 binding.tvLeftNumber.text = it.visibleNumber.toString()
@@ -120,7 +122,7 @@ class GameFragment : Fragment() {
     }
 
     private fun getColorByState(goodState: Boolean): Int {
-        val colorResId = if (goodState){
+        val colorResId = if (goodState) {
             android.R.color.holo_green_light
         } else {
             android.R.color.holo_red_light
