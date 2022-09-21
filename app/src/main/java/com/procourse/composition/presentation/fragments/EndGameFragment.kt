@@ -1,5 +1,7 @@
 package com.procourse.composition.presentation.fragments
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -7,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentManager
+import com.procourse.composition.R
 import com.procourse.composition.databinding.FragmentEndGameBinding
 import com.procourse.composition.domain.entity.GameResult
+import com.procourse.composition.presentation.viewmodel.GameFragmentViewModel
 
 class EndGameFragment : Fragment() {
 
@@ -32,6 +36,7 @@ class EndGameFragment : Fragment() {
         parseArgument()
     }
 
+    @SuppressLint("StringFormatMatches")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         /* в фрагментах нет обработчика нажатия на кнопку "назад", для этого используется
@@ -45,13 +50,55 @@ class EndGameFragment : Fragment() {
                 retryGame()
             }
         }
+        setClickListeners(callback)
+        bindViews()
+
+
+    }
+
+    private fun setClickListeners(callback: OnBackPressedCallback) {
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             callback
         )
-        binding.button2.setOnClickListener {
+        binding.buttonRetry.setOnClickListener {
             retryGame()
         }
+    }
+
+    @SuppressLint("StringFormatMatches")
+    private fun bindViews() {
+        with(binding) {
+            if (gameResult.winner)
+                emojiResult.setImageResource(R.drawable.happy)
+            else
+                emojiResult.setImageResource(R.drawable.cry)
+            tvRequiredAnswers.text = String.format(
+                requireContext().getString(
+                    R.string.src_required_answers,
+                    gameResult.gameSettings.minCountOfRightAnswers
+                )
+            )
+            tvScoreAnswers.text = String.format(
+                requireContext().getString(R.string.src_score_answers),
+                gameResult.countOfRightAnswers
+            )
+            tvRequiredPercentage.text = String.format(
+                requireContext().getString(R.string.str_required_percentage),
+                gameResult.gameSettings.minPercentsOfRightAnswers
+            )
+            tvScorePercentage.text = String.format(
+                requireContext().getString(R.string.str_score_percentage),
+                calculateProgressPercent()
+            )
+        }
+    }
+
+    private fun calculateProgressPercent(): Int {
+        // подсчет прогресса
+        if (gameResult.countOfQuestions == 0)
+            return 0
+        return ((gameResult.countOfRightAnswers / gameResult.countOfQuestions.toDouble()) * 100).toInt()
     }
 
     override fun onDestroyView() {
