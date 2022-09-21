@@ -44,16 +44,19 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(
         get() = _percentOfRightAnswers
 
     private val _minPercentOfRightAnswers = MutableLiveData<Int>() // минимальный процент
+
     // правильных ответов для вторичного прогресса (второй граничный прогресс)
     val minPercentOfRightAnswers: LiveData<Int>
         get() = _minPercentOfRightAnswers
 
     private val _enoughCountOfAnswers = MutableLiveData<Boolean>() // достигнуто ли
+
     // достаточное количество правильных ответов
     val enoughCountOfAnswers: LiveData<Boolean>
         get() = _enoughCountOfAnswers
 
     private val _enoughPercentOfAnswers = MutableLiveData<Boolean>() // достигнут ли
+
     // достаточный процент правильных ответов
     val enoughPercentOfAnswers: LiveData<Boolean>
         get() = _enoughPercentOfAnswers
@@ -73,6 +76,7 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(
         getSettings(level) // получение настроек
         startTimer() // запуск таймера
         generateQuestion() // генерация первого вопроса
+        updateProgress()
     }
 
     fun chooseAnswer(number: Int) { // выбор ответа
@@ -93,8 +97,12 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(
         _enoughPercentOfAnswers.value = percent >= gameSettings.minPercentsOfRightAnswers
     }
 
-    private fun calculateProgressPercent() = // подсчет прогресса
-        ((countOfRightAnswers / countOfAnswers.toDouble()) * PERCENT_CONST).toInt()
+    private fun calculateProgressPercent(): Int {
+        // подсчет прогресса
+        if (countOfAnswers == 0)
+            return 0
+        return ((countOfRightAnswers / countOfAnswers.toDouble()) * PERCENT_CONST).toInt()
+    }
 
     private fun generateQuestion() { // получение нового вопроса
         _question.value = generateQuestionUseCase(gameSettings.maxSumValue)

@@ -1,5 +1,6 @@
 package com.procourse.composition.presentation.fragments
 
+import android.annotation.SuppressLint
 import android.content.res.ColorStateList
 import android.graphics.Color
 import android.os.Bundle
@@ -44,6 +45,7 @@ class GameFragment : Fragment() {
         parseArgs()
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[GameFragmentViewModel::class.java]
@@ -106,11 +108,15 @@ class GameFragment : Fragment() {
                                     newPercent,
                                     true
                                 )
-                                if (progressBar.progress >= progressBar.secondaryProgress)
+                                if (enoughtPercent)
                                     progressBar.progressTintList =
                                         ColorStateList.valueOf(Color.GREEN)
                                 else
                                     progressBar.progressTintList = ColorStateList.valueOf(Color.RED)
+                                if (enoughtCount)
+                                    tvAnswersProgress.setTextColor(Color.GREEN)
+                                else
+                                    tvAnswersProgress.setTextColor(Color.RED)
                             })
                     })
             })
