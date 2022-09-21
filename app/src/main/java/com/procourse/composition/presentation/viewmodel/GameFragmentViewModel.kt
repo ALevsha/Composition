@@ -15,18 +15,21 @@ import com.procourse.composition.domain.entity.Question
 import com.procourse.composition.domain.usecase.GenerateQuestionUseCase
 import com.procourse.composition.domain.usecase.GetGameSettingsUseCase
 
-class GameFragmentViewModel(application: Application) : AndroidViewModel(
-    application
-) {
+class GameFragmentViewModel( // добавление фабрики создания viewModel
+    /*
+    * Прикол фабрики в том, что можно уже при создании viewModel сразу начинать действие
+    * и не делегировать вызовы функций во фрагмент
+    * */
+    private val level: Level, // уровень
+    private val application: Application // контекст для получения строки из строковых ресурсов
+    ) : ViewModel() {
     private val repository = GameRepositoryImpl
 
     private val generateQuestionUseCase = GenerateQuestionUseCase(repository)
     private val getGameSettingsUseCase = GetGameSettingsUseCase(repository)
 
     private lateinit var gameSettings: GameSettings // настройки сложности
-    private lateinit var level: Level // уровень сложности
     private var timer: CountDownTimer? = null // таймер отсчета времени по уровню сложности
-    private val context = application // контекст для получения строки из строковых ресурсов
 
     private val _formattedTime = MutableLiveData<String>() // лайвдата строки таймера
     val formattedTime: LiveData<String>
@@ -72,8 +75,12 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(
     /* Сперва при создании экрана в качестве параметра прилетит уровень.
     * Необходимо получить этот уровень и сгенерить настройки для этого уровня.*/
 
-    fun startGame(level: Level) {
-        getSettings(level) // получение настроек
+    init {
+        startGame()
+    }
+
+    fun startGame() {
+        getSettings() // получение настроек
         startTimer() // запуск таймера
         generateQuestion() // генерация первого вопроса
         updateProgress()
@@ -89,7 +96,7 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(
         val percent = calculateProgressPercent()
         _percentOfRightAnswers.value = percent
         _formattedProgress.value = String.format(
-            context.getString(R.string.right_answer_strings),
+            application.getString(R.string.right_answer_strings),
             countOfRightAnswers,
             gameSettings.minCountOfRightAnswers
         )
@@ -116,8 +123,7 @@ class GameFragmentViewModel(application: Application) : AndroidViewModel(
         countOfAnswers++
     }
 
-    private fun getSettings(level: Level) { // получение настроек при старте игры
-        this.level = level
+    private fun getSettings() { // получение настроек при старте игры
         this.gameSettings = getGameSettingsUseCase(level = level)
         _minPercentOfRightAnswers.value = gameSettings.minPercentsOfRightAnswers
     }
