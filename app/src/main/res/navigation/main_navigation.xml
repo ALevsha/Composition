@@ -8,5 +8,34 @@
         android:id="@+id/startFragment"
         android:name="com.procourse.composition.presentation.fragments.StartFragment"
         android:label="fragment_start"
-        tools:layout="@layout/fragment_start" />
+        tools:layout="@layout/fragment_start" >
+        <action
+            android:id="@+id/action_startFragment_to_levelChooseFragment"
+            app:destination="@id/levelChooseFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/endGameFragment"
+        android:name="com.procourse.composition.presentation.fragments.EndGameFragment"
+        android:label="fragment_end_game"
+        tools:layout="@layout/fragment_end_game" />
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="com.procourse.composition.presentation.fragments.GameFragment"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game" >
+        <action
+            android:id="@+id/action_gameFragment_to_endGameFragment"
+            app:destination="@id/endGameFragment"
+            app:popUpTo="@id/gameFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/levelChooseFragment"
+        android:name="com.procourse.composition.presentation.fragments.LevelChooseFragment"
+        android:label="fragment_level_choose"
+        tools:layout="@layout/fragment_level_choose" >
+        <action
+            android:id="@+id/action_levelChooseFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+    </fragment>
 </navigation>

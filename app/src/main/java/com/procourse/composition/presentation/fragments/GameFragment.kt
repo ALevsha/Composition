@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.procourse.composition.R
 import com.procourse.composition.data.GameRepositoryImpl
 import com.procourse.composition.databinding.FragmentGameBinding
@@ -141,10 +142,15 @@ class GameFragment : Fragment() {
     }
 
     private fun launchEndGameFragment(gameResult: GameResult) {
-        requireActivity().supportFragmentManager.beginTransaction()
+        /*requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.main_container, EndGameFragment.newInstance(gameResult))
             .addToBackStack(null)
-            .commit()
+            .commit()*/
+
+        val args = Bundle().apply {
+            putParcelable(EndGameFragment.GAME_RESULT_KEY, gameResult)
+        }
+        findNavController().navigate(R.id.action_gameFragment_to_endGameFragment, args)
     }
 
     companion object {
@@ -152,7 +158,7 @@ class GameFragment : Fragment() {
         val NAME = this.javaClass.name
 
         // ключ для уровня
-        private const val KEY_LEVEL = "level"
+        const val KEY_LEVEL = "level"
 
         fun newInstance(level: Level): GameFragment {
             // используем apply для работы с экземпляром объекта

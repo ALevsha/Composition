@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.procourse.composition.R
 import com.procourse.composition.databinding.FragmentStartBinding
 
@@ -55,10 +56,16 @@ class StartFragment : Fragment() {
         * хорошим способом является создание экземпляра фрагмента через фабричный метод (в companion
         * object создается публичный статичный метод, возвращающий экземпляр фрагмента. Также в этом
         * методе  можно загрузить параметры во фрагмент.
-        * */
+        * *//*
         requireActivity().supportFragmentManager.beginTransaction()
             .replace(R.id.main_container, LevelChooseFragment.newInstance())
             .addToBackStack(null)
-            .commit()
+            .commit()*/
+
+        /* осуществление перехода с помощью навигации
+        для каждого перехода по стрелочке создается свой action, по которому можно осуществлять
+        переход на фрагмент, на который указывает стрелка в дизайнере
+         */
+        findNavController().navigate(R.id.action_startFragment_to_levelChooseFragment)
     }
 }

@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 import com.procourse.composition.R
 import com.procourse.composition.databinding.FragmentEndGameBinding
 import com.procourse.composition.domain.entity.GameResult
@@ -57,10 +58,14 @@ class EndGameFragment : Fragment() {
     }
 
     private fun setClickListeners(callback: OnBackPressedCallback) {
+        /*
+        Устанавливать слушатель на нажатие кнопки назад более не нужно, т.к в бекстек значение
+        кладет AndroidNavigation:
+
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             callback
-        )
+        )*/
         binding.buttonRetry.setOnClickListener {
             retryGame()
         }
@@ -118,16 +123,17 @@ class EndGameFragment : Fragment() {
     private fun retryGame() {
         /* чтобы пропустить предидущий фрагмент, при нажатии кнопки назад сперва переходят к нему
         * по заданному имени фрагмента с флагом включения на очистку backStack'а
-        * FragmentManager.POP_BACK_STACK_INCLUSIVE*/
+        * FragmentManager.POP_BACK_STACK_INCLUSIVE*//*
         requireActivity().supportFragmentManager.popBackStack(
             GameFragment.NAME,
             FragmentManager.POP_BACK_STACK_INCLUSIVE
-        )
+        )*/
+        findNavController().popBackStack()
     }
 
     companion object {
 
-        private const val GAME_RESULT_KEY = "result"
+        const val GAME_RESULT_KEY = "result"
 
         fun newInstance(gameResult: GameResult): EndGameFragment {
             return EndGameFragment().apply {
