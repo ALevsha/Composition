@@ -17,7 +17,11 @@
         android:id="@+id/endGameFragment"
         android:name="com.procourse.composition.presentation.fragments.EndGameFragment"
         android:label="fragment_end_game"
-        tools:layout="@layout/fragment_end_game" />
+        tools:layout="@layout/fragment_end_game" >
+        <argument
+            android:name="gameResult"
+            app:argType="com.procourse.composition.domain.entity.GameResult" />
+    </fragment>
     <fragment
         android:id="@+id/gameFragment"
         android:name="com.procourse.composition.presentation.fragments.GameFragment"
@@ -28,6 +32,9 @@
             app:destination="@id/endGameFragment"
             app:popUpTo="@id/gameFragment"
             app:popUpToInclusive="true" />
+        <argument
+            android:name="level"
+            app:argType="com.procourse.composition.domain.entity.Level" />
     </fragment>
     <fragment
         android:id="@+id/levelChooseFragment"

@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.procourse.composition.R
 import com.procourse.composition.data.GameRepositoryImpl
 import com.procourse.composition.databinding.FragmentGameBinding
@@ -24,10 +25,15 @@ import com.procourse.composition.presentation.viewmodel.GameViewModelFactory
 
 class GameFragment : Fragment() {
 
-    private lateinit var level: Level // переменная, хранящая уровень
+//    private lateinit var level: Level // переменная, хранящая уровень
+
+    // 2 способ получения аргументов при использовании навигации
+    private val args by navArgs<GameFragmentArgs>()
 
     private val modelFactory by lazy { // создание фабрики viewModel с передачей параметров внутрь
-        GameViewModelFactory(level, requireActivity().application)
+        // 1 способ получения аргументов при использовании навигации
+        //val args = GameFragmentArgs.fromBundle(requireArguments())
+        GameViewModelFactory(args.level, requireActivity().application)
     }
 
     private val viewModel by lazy { // создание объекта viewModel
@@ -61,10 +67,11 @@ class GameFragment : Fragment() {
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    /*override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        При применении навигации считывание аргументов выполняется другим способом
         parseArgs()
-    }
+    }*/
 
     @SuppressLint("ResourceAsColor")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -131,15 +138,15 @@ class GameFragment : Fragment() {
         return ContextCompat.getColor(requireContext(), colorResId)
     }
 
-    private fun parseArgs() {
-        /* для присвоение используется явное приведение из объекта Serializable к Level.
+   /* private fun parseArgs() {
+        *//* для присвоение используется явное приведение из объекта Serializable к Level.
         * здесь использется requireArguments() чтобы при несоздании фрагмента или неправильного
         * аргумента выбрасывалось исключение
-        */
+        *//*
         requireArguments().getParcelable<Level>(KEY_LEVEL)?.let {
             level = it
         }
-    }
+    }*/
 
     private fun launchEndGameFragment(gameResult: GameResult) {
         /*requireActivity().supportFragmentManager.beginTransaction()
@@ -147,10 +154,19 @@ class GameFragment : Fragment() {
             .addToBackStack(null)
             .commit()*/
 
+        /*
+        Способ весьма неудобный, т.к необходимо делать константы ключей значений
+         другого класса общедоступными
         val args = Bundle().apply {
             putParcelable(EndGameFragment.GAME_RESULT_KEY, gameResult)
         }
-        findNavController().navigate(R.id.action_gameFragment_to_endGameFragment, args)
+        findNavController().navigate(R.id.action_gameFragment_to_endGameFragment, args)*/
+
+        findNavController().navigate(
+            GameFragmentDirections.actionGameFragmentToEndGameFragment(
+                gameResult
+            )
+        )
     }
 
     companion object {
