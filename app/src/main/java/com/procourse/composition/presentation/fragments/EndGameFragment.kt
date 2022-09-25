@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.procourse.composition.R
 import com.procourse.composition.databinding.FragmentEndGameBinding
 import com.procourse.composition.domain.entity.GameResult
@@ -16,7 +18,10 @@ import com.procourse.composition.presentation.viewmodel.GameFragmentViewModel
 
 class EndGameFragment : Fragment() {
 
-    private lateinit var gameResult: GameResult
+    //private lateinit var gameResult: GameResult
+
+    private val args by navArgs<EndGameFragmentArgs>()
+    private val gameResult by lazy { args.gameResult }
 
     private var _binding: FragmentEndGameBinding? = null
     private val binding: FragmentEndGameBinding
@@ -31,10 +36,10 @@ class EndGameFragment : Fragment() {
         return binding.root
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+    /*override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parseArgument()
-    }
+    }*/
 
     @SuppressLint("StringFormatMatches")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -52,15 +57,17 @@ class EndGameFragment : Fragment() {
         }
         setClickListeners(callback)
         bindViews()
-
-
     }
 
     private fun setClickListeners(callback: OnBackPressedCallback) {
+        /*
+        Устанавливать слушатель на нажатие кнопки назад более не нужно, т.к в бекстек значение
+        кладет AndroidNavigation:
+
         requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             callback
-        )
+        )*/
         binding.buttonRetry.setOnClickListener {
             retryGame()
         }
@@ -106,28 +113,29 @@ class EndGameFragment : Fragment() {
         _binding = null
     }
 
-    private fun parseArgument() {
-        /* при использовании getParcelable приходит нуллабельный объект, => для получения
+    /*private fun parseArgument() {
+        *//* при использовании getParcelable приходит нуллабельный объект, => для получения
         * значений можно использовать оператор let {lambda}. В угловых скобках необходимо
-        * указать получаемый тип*/
+        * указать получаемый тип*//*
         requireArguments().getParcelable<GameResult>(GAME_RESULT_KEY)?.let {
             gameResult = it
         }
-    }
+    }*/
 
     private fun retryGame() {
         /* чтобы пропустить предидущий фрагмент, при нажатии кнопки назад сперва переходят к нему
         * по заданному имени фрагмента с флагом включения на очистку backStack'а
-        * FragmentManager.POP_BACK_STACK_INCLUSIVE*/
+        * FragmentManager.POP_BACK_STACK_INCLUSIVE*//*
         requireActivity().supportFragmentManager.popBackStack(
             GameFragment.NAME,
             FragmentManager.POP_BACK_STACK_INCLUSIVE
-        )
+        )*/
+        findNavController().popBackStack()
     }
 
     companion object {
 
-        private const val GAME_RESULT_KEY = "result"
+        const val GAME_RESULT_KEY = "result"
 
         fun newInstance(gameResult: GameResult): EndGameFragment {
             return EndGameFragment().apply {
