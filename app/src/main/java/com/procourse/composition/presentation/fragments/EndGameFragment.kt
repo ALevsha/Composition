@@ -75,25 +75,36 @@ class EndGameFragment : Fragment() {
 
     @SuppressLint("StringFormatMatches")
     private fun bindViews() {
+        // прикол dataBinding в том, чтобы посылать объект с данными напрямую в макет формы,
+        /*
+        * в макете создается переменная:
+        * <data>
+        <variable
+            name="gameResult"
+            type="com.procourse.composition.domain.entity.GameResult" />
+    </data>
+    * и внутрь этой переменной через dataBinding подается нужный объект
+        * */
+        binding.gameResult = args.gameResult
         with(binding) {
-            if (gameResult.winner)
-                emojiResult.setImageResource(R.drawable.happy)
-            else
-                emojiResult.setImageResource(R.drawable.cry)
-            tvRequiredAnswers.text = String.format(
-                requireContext().getString(
-                    R.string.src_required_answers,
-                    gameResult.gameSettings.minCountOfRightAnswers
-                )
-            )
-            tvScoreAnswers.text = String.format(
-                requireContext().getString(R.string.src_score_answers),
-                gameResult.countOfRightAnswers
-            )
-            tvRequiredPercentage.text = String.format(
-                requireContext().getString(R.string.str_required_percentage),
-                gameResult.gameSettings.minPercentsOfRightAnswers
-            )
+//            if (gameResult.winner)
+//                emojiResult.setImageResource(R.drawable.happy)
+//            else
+//                emojiResult.setImageResource(R.drawable.cry)
+//            tvRequiredAnswers.text = String.format(
+//                requireContext().getString(
+//                    R.string.src_required_answers,
+//                    gameResult.gameSettings.minCountOfRightAnswers
+//                )
+//            )
+//            tvScoreAnswers.text = String.format(
+//                requireContext().getString(R.string.src_score_answers),
+//                gameResult.countOfRightAnswers
+//            )
+//            tvRequiredPercentage.text = String.format(
+//                requireContext().getString(R.string.str_required_percentage),
+//                gameResult.gameSettings.minPercentsOfRightAnswers
+//            )
             tvScorePercentage.text = String.format(
                 requireContext().getString(R.string.str_score_percentage),
                 calculateProgressPercent()
