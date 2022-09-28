@@ -15,7 +15,7 @@
     </fragment>
     <fragment
         android:id="@+id/endGameFragment"
-        android:name="com.procourse.composition.presentation.fragments.EndGameFragment"
+        android:name="com.procourse.composition.presentation.fragments.EndGameFragment.EndGameFragment"
         android:label="fragment_end_game"
         tools:layout="@layout/fragment_end_game" >
         <argument
@@ -24,7 +24,7 @@
     </fragment>
     <fragment
         android:id="@+id/gameFragment"
-        android:name="com.procourse.composition.presentation.fragments.GameFragment"
+        android:name="com.procourse.composition.presentation.fragments.GameFragment.GameFragment"
         android:label="fragment_game"
         tools:layout="@layout/fragment_game" >
         <action

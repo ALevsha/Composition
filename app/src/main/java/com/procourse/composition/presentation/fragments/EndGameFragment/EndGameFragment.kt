@@ -1,27 +1,21 @@
-package com.procourse.composition.presentation.fragments
+package com.procourse.composition.presentation.fragments.EndGameFragment
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.procourse.composition.R
 import com.procourse.composition.databinding.FragmentEndGameBinding
-import com.procourse.composition.domain.entity.GameResult
-import com.procourse.composition.presentation.viewmodel.GameFragmentViewModel
 
 class EndGameFragment : Fragment() {
 
     //private lateinit var gameResult: GameResult
 
     private val args by navArgs<EndGameFragmentArgs>()
-    private val gameResult by lazy { args.gameResult }
+//    private val gameResult by lazy { args.gameResult }
 
     private var _binding: FragmentEndGameBinding? = null
     private val binding: FragmentEndGameBinding
@@ -50,16 +44,16 @@ class EndGameFragment : Fragment() {
         * то при уничтожении фрагмента ссылка на него также будет доступна, что приводит к утечке
         * памяти) и объект анонимного класса OnBackPressedCallback, в котором будет переопределен
         * метод handleOnBackPressed()*/
-        val callback = object : OnBackPressedCallback(true) {
+        /*val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 retryGame()
             }
-        }
-        setClickListeners(callback)
+        }*/
+        setClickListeners(/*callback*/)
         bindViews()
     }
 
-    private fun setClickListeners(callback: OnBackPressedCallback) {
+    private fun setClickListeners(/*callback: OnBackPressedCallback*/) {
         /*
         Устанавливать слушатель на нажатие кнопки назад более не нужно, т.к в бекстек значение
         кладет AndroidNavigation:
@@ -75,38 +69,44 @@ class EndGameFragment : Fragment() {
 
     @SuppressLint("StringFormatMatches")
     private fun bindViews() {
-        with(binding) {
-            if (gameResult.winner)
-                emojiResult.setImageResource(R.drawable.happy)
-            else
-                emojiResult.setImageResource(R.drawable.cry)
-            tvRequiredAnswers.text = String.format(
-                requireContext().getString(
-                    R.string.src_required_answers,
-                    gameResult.gameSettings.minCountOfRightAnswers
-                )
-            )
-            tvScoreAnswers.text = String.format(
-                requireContext().getString(R.string.src_score_answers),
-                gameResult.countOfRightAnswers
-            )
-            tvRequiredPercentage.text = String.format(
-                requireContext().getString(R.string.str_required_percentage),
-                gameResult.gameSettings.minPercentsOfRightAnswers
-            )
-            tvScorePercentage.text = String.format(
-                requireContext().getString(R.string.str_score_percentage),
-                calculateProgressPercent()
-            )
-        }
+        // прикол dataBinding в том, чтобы посылать объект с данными напрямую в макет формы,
+        /*
+        * в макете создается переменная:
+        * <data>
+        <variable
+            name="gameResult"
+            type="com.procourse.composition.domain.entity.GameResult" />
+    </data>
+    * и внутрь этой переменной через dataBinding подается нужный объект
+        * */
+        binding.gameResult = args.gameResult
+//        with(binding) {
+//            if (gameResult.winner)
+//                emojiResult.setImageResource(R.drawable.happy)
+//            else
+//                emojiResult.setImageResource(R.drawable.cry)
+//            tvRequiredAnswers.text = String.format(
+//                requireContext().getString(
+//                    R.string.src_required_answers,
+//                    gameResult.gameSettings.minCountOfRightAnswers
+//                )
+//            )
+//            tvScoreAnswers.text = String.format(
+//                requireContext().getString(R.string.src_score_answers),
+//                gameResult.countOfRightAnswers
+//            )
+//            tvRequiredPercentage.text = String.format(
+//                requireContext().getString(R.string.str_required_percentage),
+//                gameResult.gameSettings.minPercentsOfRightAnswers
+//            )
+//            tvScorePercentage.text = String.format(
+//                requireContext().getString(R.string.str_score_percentage),
+//                calculateProgressPercent()
+//            )
+//        }
     }
 
-    private fun calculateProgressPercent(): Int {
-        // подсчет прогресса
-        if (gameResult.countOfQuestions == 0)
-            return 0
-        return ((gameResult.countOfRightAnswers / gameResult.countOfQuestions.toDouble()) * 100).toInt()
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -133,16 +133,16 @@ class EndGameFragment : Fragment() {
         findNavController().popBackStack()
     }
 
-    companion object {
-
-        const val GAME_RESULT_KEY = "result"
-
-        fun newInstance(gameResult: GameResult): EndGameFragment {
-            return EndGameFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(GAME_RESULT_KEY, gameResult)
-                }
-            }
-        }
-    }
+//    companion object {
+//
+//        const val GAME_RESULT_KEY = "result"
+//
+//        fun newInstance(gameResult: GameResult): EndGameFragment {
+//            return EndGameFragment().apply {
+//                arguments = Bundle().apply {
+//                    putParcelable(GAME_RESULT_KEY, gameResult)
+//                }
+//            }
+//        }
+//    }
 }

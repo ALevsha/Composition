@@ -25,4 +25,5 @@
     <string name="src_required_answers">Необходимое количество правильных ответов %s</string>
     <string name="emoji">Game Over</string>
     <string name="repeat">Попробовать снова</string>
+    <string name="time">00:00</string>
 </resources>
