@@ -35,16 +35,16 @@ class GameFragment : Fragment() {
         ViewModelProvider(this, modelFactory)[GameFragmentViewModel::class.java]
     }
 
-    private val tvOptions by lazy {
-        mutableListOf<TextView>().apply {
-            add(binding.tvOption1)
-            add(binding.tvOption2)
-            add(binding.tvOption3)
-            add(binding.tvOption4)
-            add(binding.tvOption5)
-            add(binding.tvOption6)
-        }
-    }
+//    private val tvOptions by lazy {
+//        mutableListOf<TextView>().apply {
+//            add(binding.tvOption1)
+//            add(binding.tvOption2)
+//            add(binding.tvOption3)
+//            add(binding.tvOption4)
+//            add(binding.tvOption5)
+//            add(binding.tvOption6)
+//        }
+//    }
 
     private lateinit var gameResult: GameResult
 
@@ -72,8 +72,14 @@ class GameFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        /*
+        * для автоматической подписки на объект liveData из viewModel в dataBinding на вход
+        * необходимо подать саму viewModel, а также жизненный цикл прикрепленной activity
+        * */
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = viewLifecycleOwner
         observeViewModel()
-        setClickListeners()
+//        setClickListeners()
     }
 
     override fun onDestroyView() {
@@ -81,57 +87,50 @@ class GameFragment : Fragment() {
         _binding = null
     }
 
-    private fun setClickListeners() {
-        for (tvOption in tvOptions)
-            tvOption.setOnClickListener {
-                viewModel.chooseAnswer(tvOption.text.toString().toInt())
-            }
-    }
+//    private fun setClickListeners() {
+//        for (tvOption in tvOptions)
+//            tvOption.setOnClickListener {
+//                viewModel.chooseAnswer(tvOption.text.toString().toInt())
+//            }
+//    }
 
     private fun observeViewModel() {
         with(viewModel) {
-            question.observe(viewLifecycleOwner) {
-                binding.tvSum.text = it.sum.toString()
-                binding.tvLeftNumber.text = it.visibleNumber.toString()
-
-                for (i in 0 until tvOptions.size)
-                    tvOptions[i].text = it.options[i].toString()
-            }
-            percentOfRightAnswers.observe(viewLifecycleOwner) {
-                binding.progressBar.setProgress(it, true)
-            }
-            enoughCountOfAnswers.observe(viewLifecycleOwner) {
-                val color = getColorByState(it)
-                binding.tvAnswersProgress.setTextColor(color) // установка цвета текста
-            }
-            enoughPercentOfAnswers.observe(viewLifecycleOwner) {
-                val color = getColorByState(it)
-                binding.progressBar.progressTintList = ColorStateList.valueOf(color)
-                // установка цвета progressBar'a
-            }
-            formattedProgress.observe(viewLifecycleOwner) {
-                binding.tvAnswersProgress.text = it
-            }
-            minPercentOfRightAnswers.observe(viewLifecycleOwner) {
-                binding.progressBar.secondaryProgress = it
-            }
-            formattedTime.observe(viewLifecycleOwner) {
-                binding.tvTimer.text = it
-            }
+//            question.observe(viewLifecycleOwner) {
+//                binding.tvSum.text = it.sum.toString()
+//                binding.tvLeftNumber.text = it.visibleNumber.toString()
+//
+//                for (i in 0 until tvOptions.size)
+//                    tvOptions[i].text = it.options[i].toString()
+//            }
+//            percentOfRightAnswers.observe(viewLifecycleOwner) {
+//                binding.progressBar.setProgress(it, true)
+//            }
+//            enoughCountOfAnswers.observe(viewLifecycleOwner) {
+//                val color = getColorByState(it)
+//                binding.tvAnswersProgress.setTextColor(color) // установка цвета текста
+//            }
+//            enoughPercentOfAnswers.observe(viewLifecycleOwner) {
+//                val color = getColorByState(it)
+//                binding.progressBar.progressTintList = ColorStateList.valueOf(color)
+//                // установка цвета progressBar'a
+//            }
+//            formattedProgress.observe(viewLifecycleOwner) {
+//                binding.tvAnswersProgress.text = it
+//            }
+//            minPercentOfRightAnswers.observe(viewLifecycleOwner) {
+//                binding.progressBar.secondaryProgress = it
+//            }
+//            formattedTime.observe(viewLifecycleOwner) {
+//                binding.tvTimer.text = it
+//            }
             gameResult.observe(viewLifecycleOwner) {
                 launchEndGameFragment(it)
             }
         }
     }
 
-    private fun getColorByState(goodState: Boolean): Int {
-        val colorResId = if (goodState) {
-            android.R.color.holo_green_light
-        } else {
-            android.R.color.holo_red_light
-        }
-        return ContextCompat.getColor(requireContext(), colorResId)
-    }
+
 
    /* private fun parseArgs() {
         *//* для присвоение используется явное приведение из объекта Serializable к Level.
@@ -164,26 +163,26 @@ class GameFragment : Fragment() {
         )
     }
 
-    companion object {
-
-        val NAME = this.javaClass.name
-
-        // ключ для уровня
-        const val KEY_LEVEL = "level"
-
-        fun newInstance(level: Level): GameFragment {
-            // используем apply для работы с экземпляром объекта
-            return GameFragment().apply {
-                // на вход идет новый словарь с уровнем
-                arguments = Bundle().apply {
-                    /*
-                    * чтобы положить в словарь аргументов объект, необходимо привести его
-                    * к набору бит с помощбю интерфейса Serializable b=или Parcelable.
-                    * Enum класс неявно реализует этот интерфейс.
-                    */
-                    putParcelable(KEY_LEVEL, level)
-                }
-            }
-        }
-    }
+//    companion object {
+//
+//        val NAME = this.javaClass.name
+//
+//        // ключ для уровня
+//        const val KEY_LEVEL = "level"
+//
+//        fun newInstance(level: Level): GameFragment {
+//            // используем apply для работы с экземпляром объекта
+//            return GameFragment().apply {
+//                // на вход идет новый словарь с уровнем
+//                arguments = Bundle().apply {
+//                    /*
+//                    * чтобы положить в словарь аргументов объект, необходимо привести его
+//                    * к набору бит с помощбю интерфейса Serializable b=или Parcelable.
+//                    * Enum класс неявно реализует этот интерфейс.
+//                    */
+//                    putParcelable(KEY_LEVEL, level)
+//                }
+//            }
+//        }
+//    }
 }
