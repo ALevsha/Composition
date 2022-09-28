@@ -1,26 +1,22 @@
-package com.procourse.composition.presentation.fragments
+package com.procourse.composition.presentation.fragments.EndGameFragment
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.procourse.composition.R
 import com.procourse.composition.databinding.FragmentEndGameBinding
 import com.procourse.composition.domain.entity.GameResult
-import com.procourse.composition.presentation.viewmodel.GameFragmentViewModel
 
 class EndGameFragment : Fragment() {
 
     //private lateinit var gameResult: GameResult
 
-    private val args by navArgs<EndGameFragmentArgs>()
+    private val args by navArgs<com.procourse.composition.presentation.fragments.EndGameFragmentArgs>()
     private val gameResult by lazy { args.gameResult }
 
     private var _binding: FragmentEndGameBinding? = null
@@ -86,7 +82,7 @@ class EndGameFragment : Fragment() {
     * и внутрь этой переменной через dataBinding подается нужный объект
         * */
         binding.gameResult = args.gameResult
-        with(binding) {
+//        with(binding) {
 //            if (gameResult.winner)
 //                emojiResult.setImageResource(R.drawable.happy)
 //            else
@@ -105,19 +101,14 @@ class EndGameFragment : Fragment() {
 //                requireContext().getString(R.string.str_required_percentage),
 //                gameResult.gameSettings.minPercentsOfRightAnswers
 //            )
-            tvScorePercentage.text = String.format(
-                requireContext().getString(R.string.str_score_percentage),
-                calculateProgressPercent()
-            )
-        }
+//            tvScorePercentage.text = String.format(
+//                requireContext().getString(R.string.str_score_percentage),
+//                calculateProgressPercent()
+//            )
+//        }
     }
 
-    private fun calculateProgressPercent(): Int {
-        // подсчет прогресса
-        if (gameResult.countOfQuestions == 0)
-            return 0
-        return ((gameResult.countOfRightAnswers / gameResult.countOfQuestions.toDouble()) * 100).toInt()
-    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -14,16 +14,7 @@ data class GameSettings(
     val minCountOfRightAnswers: Int,// минимальное количество правильных ответов
     val minPercentsOfRightAnswers: Int,// минимальный процент правильных ответов
     val gameTimeInSeconds: Int// время игры в секунду
-) : Parcelable {
-
-    val minCountOfRightAnswersString: String
-        get() = minCountOfRightAnswers.toString()
-
-    val minPercentOfRightAnswersString: String
-        get() = minPercentsOfRightAnswers.toString()
-}
-
-/*{
+) : Parcelable /*{
     *//*
     * В отличии от интерфейса Serializable, Parcelable не генерится автоматически.
     * При его использовании необходимо подстроить реализацию интерфейса под каждый класс

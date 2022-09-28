@@ -1,8 +1,7 @@
-package com.procourse.composition.presentation.fragments
+package com.procourse.composition.presentation.fragments.GameFragment
 
 import android.annotation.SuppressLint
 import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,16 +9,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.procourse.composition.R
-import com.procourse.composition.data.GameRepositoryImpl
 import com.procourse.composition.databinding.FragmentGameBinding
 import com.procourse.composition.domain.entity.GameResult
 import com.procourse.composition.domain.entity.Level
-import com.procourse.composition.domain.usecase.GetGameSettingsUseCase
 import com.procourse.composition.presentation.viewmodel.GameFragmentViewModel
 import com.procourse.composition.presentation.viewmodel.GameViewModelFactory
 
